@@ -1,0 +1,6 @@
+brew node.js
+pip install jupyterlab
+pip install ipywidgets
+jupyter nbextension enable --py widgetsnbextension
+pip install matplotlib
+pip install pandas
