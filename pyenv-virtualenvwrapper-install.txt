@@ -1,5 +1,5 @@
-≈## INSTALL HOMEBREW ##
-$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)
+## INSTALL HOMEBREW ##
+/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 
 ## INSTALL OH-MY-ZSH ##
 sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
@@ -7,19 +7,24 @@ sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.
 ## INSTALL PYENV ##
 brew install pyenv
 cd ~/
-echo '##__pyenv__config__begin__#' >> .zsrch 
+echo '##__pyenv__config__begin__#' >> .zshrc
 echo 'eval "$(pyenv init -)"' >> .zshrc
 brew install zlib sqlite
 export LDFLAGS="-L/usr/local/opt/zlib/lib -L/usr/local/opt/sqlite/lib"
 export CPPFLAGS="-I/usr/local/opt/zlib/include -I/usr/local/opt/sqlite/include"
 echo 'export WORKON_HOME=~/.virtualenvs' >> .zshrc
 echo 'mkdir -p $WORKON_HOME' >> .zshrc
+echo '#__pyenv__config__end__#' >> .zshrc
 
 ## INSTALL PYTHON 3.9.0 AS GLOBAL PYTHON (not necessary) ## 
 pyenv install 3.9.0
 pip install --upgrade pip
 pyenv global 3.9.0
 $(pyenv which python3) -m pip install virtualenvwrapper
+
+## INSTALL HDF5 & c-blocks (for Pytables)
+brew install hdf5
+brew install c-blosc
 
 ## IN ~/.oh-my-zsh/custom/aliases.zsh ## (WARNING : Errase current aliases.zsh)
 printf '%s\n' '# -- pyenv aliases -- #' "alias mkpyenv='f() {" 'pyenv install $1;' 'pyenv shell $1;' 'pip install --upgrade pip;' 'pip install virtualenvwrapper;' 'sed -i -e "/. ~\\/.pyenv\\/versions\\/$1\\/bin\\/virtualenvwrapper.sh/d" .zshrc;' 'sed -i -e "s/#__pyenv__config__end__#/. ~\\/.pyenv\\/versions\\/$1\\/bin\\/virtualenvwrapper.sh\\' '#__pyenv__config__end__#/g" .zshrc;' 'source .zshrc; mkdir -p ~/src/$2 && cd ~/src/$2;' 'mkvirtualenv $(basename $(pwd))' "}; f'" > ~/.oh-my-zsh/custom/aliases.zsh
